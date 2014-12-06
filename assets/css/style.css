@@ -1,0 +1,102 @@
+﻿html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #333;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+#game canvas {
+  margin: 0 auto;
+  margin-top: 8px;
+}
+
+.button, .pushed:hover {
+  position: absolute;
+  bottom: 8px;
+  padding: 10px;
+  font-family: "Open Sans", "Helvetica", sans-serif;
+  font-weight: 800;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  color: white;
+  background: transparent;
+  transition: all 0.2s ease;
+  z-index: 9;
+}
+.button:hover, .pushed {
+  background: white;
+  color: #1F8999;
+  cursor: pointer;
+}
+
+.screen {
+  position: absolute;
+  top: 8px;
+  font-family: "Open Sans";
+  font-variant: small-caps;
+  text-transform: lowercase;
+  color: white;
+  background: #333;
+  background: rgba(0,0,0,0.5);
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#gameoverScreen, #rulesScreen {
+  box-sizing: border-box;
+  padding-top: 50px;
+  padding: 25px;
+  text-align: center;
+  flex-direction: column;
+  align-self: center;
+}
+
+#rulesScreen {
+  background: #333;
+  background: rgba(0,0,0,0.9);
+  overflow-y: scroll;
+}
+
+#gameoverScreen div {
+  margin: auto;
+}
+
+.screen h3 {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0 auto;
+}
+
+ul {
+  list-style-type: none;
+  font-size: 18px;
+  margin: 0;
+  margin-top: 30px;
+  padding: 0;
+}
+
+#newrecord {
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background-color: #333;
+    border-left: none;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #555555;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #151515;
+}
