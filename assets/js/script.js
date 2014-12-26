@@ -1,5 +1,5 @@
 /*jslint browser:true */
-/*global Phaser */
+/*global Phaser, $ */
 (function () {
   'use strict';
 
@@ -19,32 +19,7 @@
       OFFSET_FOR_SCORE = 50,
       TIME_BEFORE_PLAYING_MS = 500,
 
-      BONUS_OBJECTS_ARRAY = [
-        {
-          'name': 'coin',
-          'message': '+1 POINT !'
-        },
-        {
-          'name': 'star',
-          'message': 'INVINCIBLE !'
-        },
-        {
-          'name': 'minirock',
-          'message': ''
-        },
-        // {
-        //   'name': 'algae',
-        //   'message': 'RALENTISSEMENT !'
-        // },
-        // {
-        //   'name': 'shell',
-        //   'message': 'ACCÉLÉRATION !'
-        // },
-        {
-          'name': 'whirlpool',
-          'message': 'INVERSION GRAVITÉ !'
-        }
-      ],
+      BONUS_OBJECTS_ARRAY,
       BONUS_DURATION = 3000,
 
       TEXT_COLOR = "#FFF",
@@ -55,11 +30,46 @@
       INVINCIBLE_COLOR_TINT = 0xFFFF00,
       NORMAL_COLOR_TINT = 0xFFFFFF,
 
+      timeouts_array,
       state,
+      I18N,
       game;
+
+  function _fillBonusObjects(data) {
+    BONUS_OBJECTS_ARRAY = [
+      {
+      'name': 'coin',
+      'message': data.bonus.messages.coin
+      },
+      {
+        'name': 'star',
+        'message': data.bonus.messages.star
+      },
+      {
+        'name': 'minirock',
+        'message': data.bonus.messages.minirock
+      },
+      {
+        'name': 'algae',
+        'message': data.bonus.messages.algae
+      },
+      // {
+      //   'name': 'shell',
+      //   'message': data.bonus.messages.shell
+      // },
+      {
+        'name': 'whirlpool',
+        'message': data.bonus.messages.whirlpool
+      }
+    ];
+  }
 
   String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
+  };
+
+  Array.prototype.contains = function (value) {
+    return this.indexOf(value) > -1;
   };
 
   state = {
@@ -69,8 +79,8 @@
       this.load.spritesheet("player", "assets/game/img/octopus.png", 38, 52);
 
       BONUS_OBJECTS_ARRAY.forEach(function (bonus) {
-        game.load.spritesheet(bonus.name, "assets/game/img/" + bonus.name + ".png", 32, 32);
-      });
+        this.load.spritesheet(bonus.name, "assets/game/img/" + bonus.name + ".png", 32, 32);
+      }, this);
 
       this.load.audio("swim", "assets/game/snd/swim.wav");
       this.load.audio("score", "assets/game/snd/score.wav");
@@ -211,9 +221,9 @@
       if (number) {
         that.countdownText.setStyle(style);
         that.countdownText.setText(before + number + after);
-        setTimeout(function () {
+        timeouts_array.push(setTimeout(function () {
           that.showCountdown(before, number - 1, after, style, callback, that);
-        }, 1000);
+        }, 1000));
       } else {
         that.countdownText.setText("");
         if (callback) {
@@ -234,6 +244,7 @@
       this.gameStarted = false;
       this.gameOver = false;
       this.score = 0;
+      timeouts_array = [];
       this.pauseTotalTime = 0;
       this.newBestScore = false;
       this.spawnedWalls = 0;
@@ -256,7 +267,7 @@
       this.walls.removeAll();
       this.objects.removeAll();
       this.scoreText.strokeThickness = 0;
-      this.scoreText.setText("<ESPACE>\nPOUR COMMENCER");
+      this.scoreText.setText(I18N.general.state.startGame);
       game.add.tween(this.scoreText).from({
         y: - this.game.height / 4
       }, 2000, Phaser.Easing.Elastic.Out, true);
@@ -318,7 +329,7 @@
     swim: function (){
       if (!this.gameStarted) { this.start(); }
       if (!this.gameOver) {
-        this.player.body.velocity.y = IMPULSION * this.gravityFactor;
+        this.player.body.velocity.y = IMPULSION * this.gravityFactor * this.speedFactor;
         this.playSound(this.swimSnd);
       } else if (this.time.now > this.timeOver + TIME_BEFORE_PLAYING_MS) {
         this.reset();
@@ -327,15 +338,27 @@
 
     setGameOver: function (){
       this._stopPlayer();
+      this._clearTimeouts();
+      this._clearTexts();
       this._stopAllObjects();
       this.saveScore();
       this.gameOver = true;
-      this.scoreText.setText("");
       this.background.autoScroll(0, 0);
       document.getElementById("rulesButton").style.visibility = "visible";
       this.timeOver = this.time.now;
       this.playSound(this.deadSnd);
       this._showGameoverScreen(true);
+    },
+
+    _clearTexts: function() {
+      this.scoreText.setText("");
+      this.countdownText.setText("");
+    },
+
+    _clearTimeouts: function() {
+      timeouts_array.forEach(function(t) {
+        clearTimeout(t);
+      });
     },
 
     _showGameoverScreen: function (show) {
@@ -347,10 +370,10 @@
           document.getElementById("newrecord").style.visibility = "hidden";
         }
         document.getElementById("gameoverScreen").style.visibility = "visible";
-        document.getElementById("score").innerHTML = "Score : " + state.score;
-        document.getElementById("best").innerHTML = "Meilleur : " + state.retrieveBestScore();
+        document.getElementById("score").innerHTML = I18N.general.scores.score + " : " + state.score;
+        document.getElementById("best").innerHTML = I18N.general.scores.best + " : " + state.retrieveBestScore();
         var t = Math.round((game.time.elapsedSince(state.startTime) - this.pauseTotalTime) / 1000) + "s";
-        document.getElementById("time").innerHTML = "Temps : " + t;
+        document.getElementById("time").innerHTML = I18N.general.scores.time + " : " + t;
       }
       else {
         document.getElementById("newrecord").style.visibility = "hidden";
@@ -443,15 +466,16 @@
       coin.kill();
     },
 
-    _collectAlgae: function () {
+    _collectAlgae: function (algae) {
+      algae.kill();
       this._multSpeedFactor(0.5);
-      setTimeout(function () {
-        this._multSpeedFactor(2);
-      }, BONUS_DURATION);
+      this.showCountdown("» ", BONUS_DURATION / 1000, " «", INFO_STYLE, function() {
+        state._multSpeedFactor(2);
+      }, this);
     },
 
     _multSpeedFactor: function (n) {
-      if (this.speedFactor >= MIN_SPEED_LIMIT) {
+      if (this.speedFactor >= MIN_SPEED_LIMIT && this.speedFactor <= MAX_SPEED_LIMIT) {
         this.speedFactor *= n;
         this._updateBackgroundSpeed();
       }
@@ -460,9 +484,9 @@
     _collectShell: function (shell) {
       shell.kill();
       this._addSpeedFactor(0.5);
-      setTimeout(function () {
+      timeouts_array.push(setTimeout(function () {
         state._addSpeedFactor(-0.5);
-      }, BONUS_DURATION);
+      }, BONUS_DURATION));
     },
 
     _addSpeedFactor: function (n) {
@@ -479,9 +503,6 @@
     _collectStar: function (star) {
       star.kill();
       this._becomeInvincible();
-      setTimeout(function () {
-        state._becomeMortal();
-      }, BONUS_DURATION);
     },
 
     _becomeInvincible: function () {
@@ -490,7 +511,9 @@
       this.speedFactor = 5;
       this._slideBackWalls(this);
       this._updateBackgroundSpeed();
-      this.showCountdown("» ", BONUS_DURATION / 1000, " «", INFO_STYLE, undefined, this);
+      this.showCountdown("» ", BONUS_DURATION / 1000, " «", INFO_STYLE, function() {
+        state._becomeMortal();
+      }, this);
     },
 
     _slideBackWalls: function (context) {
@@ -534,6 +557,8 @@
     spawnWalls: function (){
       var n = this.rnd.integerInRange(0, this.score + 2);
       if (this.spawnedWalls === 0 || n <= this.score) {
+        var factor = this.speedFactor > 0.5 ? 1 : Math.random();
+        if (factor <= 0.65) { return; }
         var wallY = this.rnd.integerInRange(game.height * 0.3, game.height * 0.7);
         this._spawnWall(wallY);
         this._spawnWall(wallY, true);
@@ -607,7 +632,7 @@
     toggleSounds: function () {
       this.allMuted = !this.allMuted;
       localStorage.setItem("splashy_octopus_muted", this.allMuted);
-      var m = this.allMuted ? "Son" : "Muet";
+      var m = this.allMuted ? I18N.general.sound.soundOn : I18N.general.sound.soundOff;
       document.getElementById("muteButton").innerHTML = m;
     },
 
@@ -633,6 +658,17 @@
     }
   };
 
+  function translateGame (data) {
+    I18N = data;
+    _fillBonusObjects(data);
+    $(".lost").text(I18N.general.state.gameOver);
+    $(".rulesT").text(I18N.general.rules.rules);
+    $(".rules").text(I18N.general.rules.text);
+    $("#newrecord").text(I18N.general.scores.record);
+    $("#muteButton").text(I18N.general.sound.soundOff);
+    $(".playButton").text(I18N.general.state.play);
+  }
+
 
   document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('keydown', function (e) {
@@ -654,22 +690,38 @@
       state.swim();
     });
 
-    var w = window.innerWidth >= 406 ? 390 : window.innerWidth;
-    game = new Phaser.Game(w, window.innerHeight - 16, Phaser.AUTO, 'game', state);
+    var w = window.innerWidth >= 406 ? 390 : window.innerWidth,
+        lang = navigator.language || navigator.userLanguage,
+        screens = document.querySelectorAll(".screen"),
+        pauseBtn = document.getElementById("pauseButton"),
+        muteBtn = document.getElementById("muteButton"),
+        rulesBtn = document.getElementById("rulesButton");
 
-    var screens = document.querySelectorAll(".screen");
-    var i;
-    for (i = 0; i < screens.length; ++i) {
-      screens[i].style.width = w + "px";
-      screens[i].style.height = window.innerHeight - 16 + "px";
-      screens[i].style.left = window.innerWidth / 2 - w / 2 + "px";
-    }
+    $(".playButton").click(function(e) {
+      e.preventDefault();
+      $("#main").fadeOut(300);
+      setTimeout(function() {
+        $("#jeu").fadeIn(300);
+        rulesBtn.style.left = window.innerWidth / 2 + w / 2 - rulesBtn.offsetWidth + "px";
+      }, 300);
+    });
 
-    var pauseBtn = document.getElementById("pauseButton");
+    [].forEach.call(screens, function(screen) {
+      screen.style.width = w + "px";
+      screen.style.height = window.innerHeight - 16 + "px";
+      screen.style.left = window.innerWidth / 2 - w / 2 + "px";
+    });
+
     pauseBtn.style.left = window.innerWidth / 2 - w / 2 + "px";
-    var muteBtn = document.getElementById("muteButton");
     muteBtn.style.left = parseInt(pauseBtn.style.left, 10) + 55 + "px";
-    var rulesBtn = document.getElementById("rulesButton");
-    rulesBtn.style.left = window.innerWidth / 2 + w / 2 - rulesBtn.offsetWidth + "px";
+
+    // Language settings
+    var supported_languages = ['fr', 'en', 'de'],
+        default_language = 'en';
+    lang = supported_languages.contains(lang) ? lang : default_language;
+    $.getJSON( "assets/lang/" + lang + ".json", function(data) {
+      translateGame(data);
+      game = new Phaser.Game(w, window.innerHeight - 16, Phaser.AUTO, 'game', state);
+    });
   });
 }());

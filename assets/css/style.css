@@ -1,4 +1,6 @@
 ﻿html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -99,4 +101,59 @@ ul {
 }
 ::-webkit-scrollbar-thumb:hover {
     background-color: #151515;
+}
+
+section {
+  width: 100%;
+  min-height: 100%;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  box-sizing: border-box;
+  font-size: 4em;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  text-align: center;
+  font-family: "Open Sans";
+  font-weight: 800;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+#main h1 {
+  display: block;
+  z-index: 99;
+}
+
+#main img {
+  position: relative;
+  bottom: 200px;
+  z-index: 1;
+}
+
+#main a.playButton {
+  transition: all 0.3s ease;
+  display: block;
+  color: #333;
+  background: white;
+  border: 1px solid #333;
+  font-variant: normal;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 400px;
+  margin: auto;
+}
+
+#main a.playButton:hover {
+  color: white;
+  background: #333;
+  border: 1px solid white;
+}
+
+#jeu {
+  display: none;
 }

@@ -7,85 +7,43 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
     <script src="assets/js/phaser.min.js"></script>
+    <script src="assets/js/jquery-2.1.3.min.js"></script>
     <script src="assets/js/script.js"></script>
   </head>
   <body>
-    <div id="game"></div>
-    <div id="pauseButton" class="button">Pause</div>
-    <div id="muteButton" class="button">Muet</div>
-    <div id="rulesButton" class="button">R&egrave;gles</div>
-    <div class="screen" id="pauseScreen">
-      <h3>PAUSE</h3>
-    </div>
-    <div class="screen" id="gameoverScreen">
-      <div>
-        <h3>PERDU !</h3>
-        <h4 id="newrecord">»NOUVEAU RECORD«</h4>
-        <ul>
-          <li id="score"></li>
-          <li id="best"></li>
-          <li id="time"></li>
-        </ul>
+    <section id="main">
+      <div class="container">
+        <h1>Splashy Octopus</h1>
+        <img src="assets/game/img/logo.png"/>
+        <a href="#" class="playButton">Jouer</a>
       </div>
-    </div>
-    <div class="screen" id="rulesScreen">
-      <div>
-        <h3>RèGLES</h3>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
-        <li>
-          <hr>
-        </li>
+    </section>
+    <section id="jeu">
+      <div id="game"></div>
+      <div id="pauseButton" class="button">Pause</div>
+      <div id="muteButton" class="button">Muet</div>
+      <div id="rulesButton" class="button rulesT">R&egrave;gles</div>
+      <div class="screen" id="pauseScreen">
+        <h3>PAUSE</h3>
       </div>
-    </div>
+      <div class="screen" id="gameoverScreen">
+        <div>
+          <h3 class="lost">PERDU !</h3>
+          <h4 id="newrecord">»NOUVEAU RECORD«</h4>
+          <ul>
+            <li id="score"></li>
+            <li id="best"></li>
+            <li id="time"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="screen" id="rulesScreen">
+        <div>
+          <h3 class="rulesT"></h3>
+          <p class="rules">
+          </p>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
