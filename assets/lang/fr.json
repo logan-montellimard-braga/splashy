@@ -1,0 +1,46 @@
+{
+  "general": {
+    "state": {
+      "startGame": "<ESPACE>\nPOUR COMMENCER",
+      "gameOver": "Perdu !",
+      "play": "Jouer"
+    },
+
+    "sound": {
+      "soundOn": "Son",
+      "soundOff": "Muet"
+    },
+
+    "rules": {
+      "rules": "Règles",
+      "text": "Appuyez sur <Espace> ou clickez pour faire descendre la pieuvre et éviter les obstacles.\nAttention aux objets bonus ! La pièce vous rapporte un point, l'étoile vous rend invincible, la pierre vous tue, l'algue vous ralentit, le coquillage vous accélère et le tourbillon inverse la gravité !"
+    },
+
+    "scores": {
+      "score": "score",
+      "best": "meilleur",
+      "time": "temps",
+      "record": "»NOUVEAU RECORD«"
+    }
+  },
+
+  "bonus": {
+    "names": {
+      "coin": "pièce",
+      "star": "étoile",
+      "minirock": "pierre",
+      "algae": "algue",
+      "shell": "coquillage",
+      "whirlpool": "tourbillon"
+    },
+
+    "messages": {
+      "coin": "+1 POINT !",
+      "star": "INVINCIBLE !",
+      "minirock": "",
+      "algae": "RALENTISSEMENT !",
+      "shell": "ACCÉLÉRATION !",
+      "whirlpool": "INVERSION GRAVITÉ"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "general": {
+    "state": {
+      "startGame": "<SPACE>\nTO START",
+      "gameOver": "Game Over !",
+      "play": "Play"
+    },
+
+    "sound": {
+      "soundOn": "Sound",
+      "soundOff": "Mute"
+    },
+
+    "rules": {
+      "rules": "Rules",
+      "text": "Press <Space> or click to move the octopus and avoid obstacles. Beware bonus items! Pieces earn you a point, stars make you unbreakable, stones kill you, seaweed slows you down, shells speed you up and whirlpools reverse gravity!"
+    },
+
+    "scores": {
+      "score": "score",
+      "best": "best",
+      "time": "time",
+      "record": "»NEW BEST«"
+    }
+  },
+
+  "bonus": {
+    "names": {
+      "coin": "coin",
+      "star": "star",
+      "minirock": "minirock",
+      "algae": "algae",
+      "shell": "shell",
+      "whirlpool": "whirlpool"
+    },
+
+    "messages": {
+      "coin": "+1 POINT !",
+      "star": "UNBREAKABLE !",
+      "minirock": "",
+      "algae": "SLOWDOWN !",
+      "shell": "SPEEDUP !",
+      "whrilpool": "GRAVITY REVERSAL !"
+    }
+  }
+}

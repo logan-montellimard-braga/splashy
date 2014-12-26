@@ -1,0 +1,46 @@
+{
+  "general": {
+    "state": {
+      "startGame": "<LEERTASTE>\nUM ZU STARTEN",
+      "gameOver": "Niederlage !",
+      "play": "Spielen"
+    },
+
+    "sound": {
+      "soundOn": "Klingen",
+      "soundOff": "Stumm"
+    },
+
+    "rules": {
+      "rules": "Regeln",
+      "text": "Drücken Sie die <Leertaste> oder klicken Sie auf, um den Kraken zu sinken und Hindernissen ausweichen. Aufmerksamkeit auf  Bonus-Gegenstände! Die Stück verdient man einen Punkt, der Star macht Sie unbesiegbar, die Stein macht Sie storben, Algen verlangsamt Sie, beschleunigt die Schale Ihnen, und den umgekehrten Wirbelschwerkraft !"
+    },
+
+    "scores": {
+      "score": "ergebnis",
+      "best": "beste",
+      "time": "dauer",
+      "record": "»NEUEN REKORD«"
+    }
+  },
+
+  "bonus": {
+    "names": {
+      "coin": "münze",
+      "star": "stern",
+      "minirock": "Stein",
+      "algae": "alge",
+      "shell": "schale",
+      "whirlpool": "strudel"
+    },
+
+    "messages": {
+      "coin": "+1 PUNKT !",
+      "star": "UNBESIEGBAR !",
+      "minirock": "",
+      "algae": "Verzögerung !",
+      "shell": "Beschleunigung !",
+      "whirlpool": "Schwerkraft Umkehrung !"
+    }
+  }
+}
